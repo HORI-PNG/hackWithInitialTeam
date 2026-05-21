@@ -1,0 +1,19 @@
+# Environments
+backend/.venv
+backend/venv/
+backend/env/
+backend/ENV/
+backend/.env
+
+# Python
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# IDEs / OS
+.vscode/
+.idea/
+.DS_Store
+
+# 隔離した未使用ファイルを無視
+backend/unused/
