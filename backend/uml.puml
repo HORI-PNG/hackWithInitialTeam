@@ -1,0 +1,63 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' 設定データクラス
+class VenueConfig {
+    + name : str
+    + url : str
+    + load_more_count : int
+}
+
+' 抽象基底クラス
+abstract class VenueScraperBase {
+    + config : VenueConfig
+    + {abstract} get_text_selector() : str
+    + {abstract} get_raw_texts() : List<str>
+    + get_formatted_data() : List<str>
+}
+
+' 具象クラス（マリンメッセ用）
+class MarineMesseScraper {
+    + get_text_selector() : str
+    + get_raw_texts() : List<str>
+}
+
+' スクレイパーの継承とコンポジションの関係
+VenueScraperBase *-- VenueConfig : has
+VenueScraperBase <|-- MarineMesseScraper : inherits
+
+' ユーティリティクラス
+class DataFilter {
+    + getWordInKeyword(originText: List<str>, keywords: List<str>) : List<str>
+}
+
+class JsonGetterByAPI {
+    + getJson(filteredText: List<str>, api: str) : str
+}
+
+class APIModelChecker {
+    + check_models() : void
+}
+
+' FastAPI (Pydantic) データモデル
+class SearchRequest <<Pydantic>> {
+    + venue : str
+    + keywords : List<str>
+}
+
+class LiveEvent <<Pydantic>> {
+    + date : str
+    + artist : str
+    + title : str
+}
+
+class SearchResponse <<Pydantic>> {
+    + venue : str
+    + events : List<LiveEvent>
+    + total : int
+}
+
+' データモデルの包含関係
+SearchResponse *-- LiveEvent : contains
+
+@enduml

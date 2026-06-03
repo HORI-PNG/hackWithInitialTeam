@@ -1,7 +1,9 @@
-requests
-beautifulsoup4
+fastapi
+uvicorn
+pydantic
 selenium
-google-generativeai
 google-genai
+google-generativeai
 python-dotenv
 httpx
+requests

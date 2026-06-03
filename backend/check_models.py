@@ -18,6 +18,6 @@ class APIModelChecker:
 # ファイルが直接呼ばれると、どんなファイル名であろうと、nameにはmainが入る
 # 別のファイルからインポートされると、nameにはcheck_models（ファイル名）が入る
 if __name__ == "__main__":
-    APIModelChecker().check_modeles()
+    APIModelChecker().check_models()
                 
 # https://zenn.dev/croco_82/articles/30a4112805c5dd　参考になるサイト
