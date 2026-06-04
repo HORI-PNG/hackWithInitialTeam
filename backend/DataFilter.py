@@ -1,5 +1,3 @@
-
-
 class DataFilter:
     def getWordInKeyword(self, originText, keywords):
         filteredText = []

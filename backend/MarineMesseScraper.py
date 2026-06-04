@@ -5,17 +5,33 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+# Optionsは、ブラウザのオプションを設定するためのクラスで、今回はヘッドレスモードで起動するために使用。ウィンドウサイズの変更などもできる
+from selenium.webdriver.chrome.options import Options
+from typing import List
 import time
 
-class MarineMesseScraper:
-    def getFormattedData(self, url):
-        driver = webdriver.Edge()
-        # driver = webdriver.Chrome()
+from base import VenueScraperBase
+
+class MarineMesseScraper(VenueScraperBase):
+    def getTextSelector(self) -> str:
+        return '.text.sd.appear'
+    
+    # フロントエンドから複数のアーティスト名が来た時に、複数返せるようにリストで定義
+    def getRawTexts(self) -> List[str]:
+        options = Options()
+        options.add_argument('--headless')  # 画面を表示させない
+        options.add_argument('--no-sandbox')  # セキュリティ機能を無効化するオプション。デプロイ側で使うことが多いらしい
+        options.add_argument('--disable-dev-shm-usage')  # 共有メモリを無効化するオプション。これもデプロイ側で使うことが多いらしい
+        
+        driver = webdriver.Chrome(options=options)
         originText = []
         
         try:
-            driver.get(url)
-            for i in range(3):
+            # self.config.url からURLを自動取得
+            driver.get(self.config.url)
+            
+            # クリックする回数を指定する
+            for i in range(self.config.click_times):
                 # ボタンが画面に現れ、かつクリック可能になるまで安全に待つ
                 button = WebDriverWait(driver, 10).until(
                     EC.element_to_be_clickable((By.CSS_SELECTOR, '.button.sd.appear'))
@@ -31,6 +47,7 @@ class MarineMesseScraper:
                 )
             for text in searchBox:
                 originText.append(text.get_attribute('innerText'))
+                
             return originText
         finally:
             driver.quit()

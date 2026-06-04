@@ -3,7 +3,6 @@ import google.genai as genai
 from google.genai import types
 import httpx
 
-
 class JsonGetterByAPI:
     def getJson(self, filteredText, api):
         client = genai.Client(api_key=api)
