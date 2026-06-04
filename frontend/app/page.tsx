@@ -1,65 +1,69 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="mx-auto w-full max-w-6xl flex-1 flex flex-col justify-center p-6 md:p-12">
+      {/* キャッチコピーなどのエリア */}
+      <div className="text-center mb-12">
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4 text-white">
+          簡単に、スマートに管理。
+        </h1>
+        <p className="text-white/80 max-w-md mx-auto">
+          下のボックスを選択して、登録またはお気に入りの確認を行ってください。
+        </p>
+      </div>
+
+      {/* 3つの透過ボックスリンク */}
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        {/* ボックス1：ライブ会場確認 */}
+        <Link
+          href="/register?type=venue"
+          // 変更点: transform系のクラス（-translate-y-2など）や影を消し、色の変化だけを残す
+          className="group block overflow-hidden rounded-2xl border border-white/20 bg-transparent p-6 backdrop-blur-sm transition-colors duration-300 hover:bg-white/10 hover:border-white/40"
+        >
+          <div className="mb-5 h-32 w-full rounded-xl bg-black/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-black/20">
+            <span className="text-4xl">🏟️</span>
+          </div>
+          <h2 className="mb-3 text-xl font-bold leading-tight text-white/90 transition-colors group-hover:text-white">
+            ライブ会場登録
+          </h2>
+          <p className="text-sm leading-relaxed text-white/70 transition-colors group-hover:text-white/90">
+            新しいイベント会場やライブハウスの情報をシステムに登録します。キャパシティやアクセスの管理が可能です。
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+        </Link>
+
+        {/* ボックス2：アーティスト登録 */}
+        <Link
+          href="/register?type=artist"
+          className="group block overflow-hidden rounded-2xl border border-white/20 bg-transparent p-6 backdrop-blur-sm transition-colors duration-300 hover:bg-white/10 hover:border-white/40"
+        >
+          <div className="mb-5 h-32 w-full rounded-xl bg-black/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-black/20">
+            <span className="text-4xl">🎸</span>
+          </div>
+          <h2 className="mb-3 text-xl font-bold leading-tight text-white/90 transition-colors group-hover:text-white">
+            アーティスト登録
+          </h2>
+          <p className="text-sm leading-relaxed text-white/70 transition-colors group-hover:text-white/90">
+            出演アーティストやバンドのプロフィール、SNSリンク等の情報を新規追加・更新します。
+          </p>
+        </Link>
+
+        {/* ボックス3：お気に入り */}
+        <Link
+          href="/results?filter=favorites"
+          className="group block overflow-hidden rounded-2xl border border-white/20 bg-transparent p-6 backdrop-blur-sm transition-colors duration-300 hover:bg-white/10 hover:border-white/40"
+        >
+          <div className="mb-5 h-32 w-full rounded-xl bg-black/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-black/20">
+            <span className="text-4xl">⭐</span>
+          </div>
+          <h2 className="mb-3 text-xl font-bold leading-tight text-white/90 transition-colors group-hover:text-white">
+            お気に入り
+          </h2>
+          <p className="text-sm leading-relaxed text-white/70 transition-colors group-hover:text-white/90">
+            チェックした会場やアーティストのリストを一覧で確認します。検索画面のフィルタ結果へ移動します。
+          </p>
+        </Link>
+      </div>
+    </main>
   );
 }
