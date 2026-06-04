@@ -19,3 +19,6 @@ def get_scraper(venue_name: str):
     
     scraper_class, config = VENUE_REGISTRY[venue_name]
     return scraper_class(config)
+
+def get_venue_names():
+    return list(VENUE_REGISTRY.keys())

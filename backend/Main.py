@@ -8,7 +8,7 @@ import json
 import os
 
 from dotenv import load_dotenv
-from __init__ import get_scraper
+from __init__ import get_scraper, get_venue_names
 from MarineMesseScraper import MarineMesseScraper
 from JsonGetterByAPI import JsonGetterByAPI
 from DataFilter import DataFilter
@@ -42,6 +42,10 @@ class SearchResponse(BaseModel):
     events: List[LiveEvent]  # フロントへ返す構造化されたライブ情報の配列
     total: int
     
+@app.get('/api/venues', response_model=List[str])
+def get_venues():
+    return get_venue_names()
+    
 # Next.jsから叩かれる、Web APIとしての窓口（エンドポイント）
 @app.post('/api/search', response_model=SearchResponse)
 def search(req: SearchRequest):
@@ -73,3 +77,8 @@ def search(req: SearchRequest):
         raise HTTPException(status_code=400, detail=str(e_val))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"サーバー内部エラー: {str(e)}")
+    
+if __name__ == "__main__":
+    import uvicorn
+    # Main:app は「Main.py の app という FastAPI インスタンス」という意味です
+    uvicorn.run("Main:app", host="127.0.0.1", port=8000, reload=True)
