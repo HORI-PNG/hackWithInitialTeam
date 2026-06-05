@@ -1,40 +1,47 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+// frontend/lib/api.ts
 
-export interface LiveEvent {
-  date: string;
-  artist: string;
-  title: string;
-}
+// Python（FastAPI）サーバーのアドレス
+const BACKEND_URL = "http://127.0.0.1:8000";
 
-export interface SearchResponse {
-  venue: string;
-  events: LiveEvent[];
-  total: number;
-}
-
-// 会場リストを取得する関数
+// 1. 会場リストを取得するAPI（GET）
 export async function fetchVenues(): Promise<string[]> {
-  const res = await fetch(`${API_URL}/api/venues`); // [cite: 359, 362]
-  if (!res.ok) throw new Error("会場リストの取得に失敗しました"); // [cite: 366, 370]
-  return res.json(); // [cite: 372]
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/venues`);
+    if (!res.ok) {
+      throw new Error("会場リストの取得に失敗しました");
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("fetchVenues エラー:", error);
+    // サーバーが落ちている時のための保険（フォールバック）
+    return [
+      "マリンメッセ福岡 A館",
+      "マリンメッセ福岡 B館",
+      "Zepp Fukuoka",
+      "PayPayドーム",
+    ];
+  }
 }
 
-// スクレイピングを実行する関数
-export async function searchEvents(
-  venue: string,
-  keywords: string[],
-): Promise<SearchResponse> {
-  const res = await fetch(`${API_URL}/api/search`, {
-    method: `POST`,
+// 2. ライブ情報を検索するAPI（POST）
+export async function searchEvents(venue: string, keywords: string[]) {
+  const res = await fetch(`${BACKEND_URL}/api/search`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ venue, keywords }),
+    // Python側が要求している { venue: str, keywords: List[str] } の形に合わせて送信
+    body: JSON.stringify({
+      venue: venue,
+      keywords: keywords,
+    }),
   });
 
   if (!res.ok) {
-    const errorData = await res.json();
-    throw new Error(errorData.detail || "検索に失敗しました");
+    const errorData = await res.json().catch(() => null);
+    throw new Error(errorData?.detail || "検索中にエラーが発生しました");
   }
-  return res.json();
+
+  // Pythonの SearchResponse モデル通りのデータが返ってくる
+  return await res.json();
 }

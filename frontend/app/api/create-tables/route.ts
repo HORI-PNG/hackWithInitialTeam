@@ -23,6 +23,16 @@ export async function GET() {
       );
     `;
 
+    // 3. venuesテーブルの作成（会場登録用）
+    await sql`
+      CREATE TABLE IF NOT EXISTS venues (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) UNIQUE NOT NULL,
+        url TEXT NOT NULL,
+        createdAt TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+
     return NextResponse.json(
       { message: "テーブルの作成に大成功しました！" },
       { status: 200 },

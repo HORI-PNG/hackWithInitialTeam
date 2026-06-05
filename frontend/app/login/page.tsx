@@ -68,159 +68,52 @@ export default function LoginPage() {
   };
 
   return (
-    <>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-        /* 元の index.html の CSS を完全再現 */
-        .login-wrapper {
-          font-family: "Helvetica Neue", Arial, sans-serif;
-          background-color: #f4f6f9;
-          color: #333;
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding: 40px 20px;
-          /* 親要素(layout.tsx)の背景色を上書きするための絶対配置 */
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          z-index: 100;
-        }
-        .login-box {
-          background: #ffffff;
-          border-radius: 8px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-          padding: 30px;
-          width: 100%;
-          max-width: 400px;
-          margin-bottom: 20px;
-        }
-        .login-box h2 {
-          font-size: 1.4rem;
-          margin-top: 0;
-          margin-bottom: 20px;
-          color: #2c3e50;
-          border-bottom: 2px solid #eee;
-          padding-bottom: 10px;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        .form-group {
-          margin-bottom: 15px;
-          text-align: left;
-        }
-        .form-group label {
-          display: block;
-          margin-bottom: 5px;
-          font-weight: bold;
-          color: #555;
-          font-size: 0.9rem;
-        }
-        .form-group input {
-          width: 100%;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          box-sizing: border-box;
-          font-size: 1rem;
-          color: #333;
-          background-color: #fff;
-        }
-        .form-group input:focus {
-          outline: none;
-          border-color: #007bff;
-        }
-        .password-wrapper {
-          position: relative;
-        }
-        .toggle-btn {
-          position: absolute;
-          right: 10px;
-          top: 50%;
-          transform: translateY(-50%);
-          background: none;
-          border: none;
-          cursor: pointer;
-          color: #888;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .action-btn {
-          width: 100%;
-          padding: 12px;
-          background-color: #007bff;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          font-size: 1.1rem;
-          font-weight: bold;
-          cursor: pointer;
-          transition: background 0.3s;
-          margin-top: 10px;
-        }
-        .action-btn:hover {
-          background-color: #0056b3;
-        }
-        .action-btn.login-color {
-          background-color: #10b981;
-        }
-        .action-btn.login-color:hover {
-          background-color: #059669;
-        }
-      `,
-        }}
-      />
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-indigo-900 via-purple-900 to-black">
+      {/* ホームに戻るボタン */}
+      <button
+        onClick={() => router.push("/")}
+        className="mb-6 text-white/70 hover:text-white underline transition-colors"
+      >
+        ← ホームに戻る
+      </button>
 
-      <div className="login-wrapper">
-        {/* ホームに戻るボタン（元のUIにはありませんでしたが、画面遷移用に配置） */}
-        <button
-          onClick={() => router.push("/")}
-          style={{
-            marginBottom: "20px",
-            color: "#007bff",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            textDecoration: "underline",
-          }}
-        >
-          ← ホームに戻る
-        </button>
-
+      <div className="w-full max-w-md space-y-6">
         {/* アカウント作成エリア */}
-        <div className="login-box">
-          <h2>
-            <UserPlus size={24} color="#007bff" /> ① 新規アカウント作成
+        <div className="p-8 rounded-2xl border border-white/20 bg-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.1)] backdrop-blur-md">
+          <h2 className="flex items-center gap-2 text-xl font-bold text-white mb-6">
+            <UserPlus size={24} className="text-blue-400" /> ①
+            新規アカウント作成
           </h2>
-          <form onSubmit={handleSignup}>
-            <div className="form-group">
-              <label>メールアドレス</label>
+          <form onSubmit={handleSignup} className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-white/80">
+                メールアドレス
+              </label>
               <input
                 type="email"
                 value={signupEmail}
                 onChange={(e) => setSignupEmail(e.target.value)}
+                className="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder:text-white/30"
                 placeholder="example@email.com"
                 required
               />
             </div>
-            <div className="form-group">
-              <label>パスワード（8文字以上）</label>
-              <div className="password-wrapper">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-white/80">
+                パスワード（8文字以上）
+              </label>
+              <div className="relative">
                 <input
                   type={showSignupPassword ? "text" : "password"}
                   value={signupPassword}
                   onChange={(e) => setSignupPassword(e.target.value)}
+                  className="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder:text-white/30"
                   placeholder="パスワードを入力"
                   required
                 />
                 <button
                   type="button"
-                  className="toggle-btn"
+                  className="absolute right-3 top-3 text-white/50 hover:text-white"
                   onClick={() => setShowSignupPassword(!showSignupPassword)}
                 >
                   {showSignupPassword ? (
@@ -231,53 +124,65 @@ export default function LoginPage() {
                 </button>
               </div>
             </div>
-            <button type="submit" className="action-btn">
+            <button
+              type="submit"
+              className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold transition-all"
+            >
               アカウントを作成する
             </button>
           </form>
         </div>
 
         {/* ログインエリア */}
-        <div className="login-box">
-          <h2>
-            <LogIn size={24} color="#10b981" /> ② ログイン
+        <div className="p-8 rounded-2xl border border-white/20 bg-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.1)] backdrop-blur-md">
+          <h2 className="flex items-center gap-2 text-xl font-bold text-white mb-6">
+            <LogIn size={24} className="text-emerald-400" /> ② ログイン
           </h2>
-          <form onSubmit={handleLogin}>
-            <div className="form-group">
-              <label>メールアドレス</label>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-white/80">
+                メールアドレス
+              </label>
               <input
                 type="email"
                 value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
+                className="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder:text-white/30"
                 placeholder="example@email.com"
                 required
               />
             </div>
-            <div className="form-group">
-              <label>パスワード</label>
-              <div className="password-wrapper">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-white/80">
+                パスワード
+              </label>
+              <div className="relative">
                 <input
                   type={showLoginPassword ? "text" : "password"}
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
+                  className="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder:text-white/30"
                   placeholder="パスワードを入力"
                   required
                 />
                 <button
                   type="button"
-                  className="toggle-btn"
+                  className="absolute right-3 top-3 text-white/50 hover:text-white"
                   onClick={() => setShowLoginPassword(!showLoginPassword)}
                 >
                   {showLoginPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
             </div>
-            <button type="submit" className="action-btn login-color">
+            <button
+              type="submit"
+              className="w-full py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all"
+            >
               ログインする
             </button>
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }
