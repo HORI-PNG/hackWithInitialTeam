@@ -18,12 +18,24 @@ export default function Home() {
         {/* ボックス1：ライブ会場確認 */}
         <Link
           href="/register?type=venue"
-          // 変更点: transform系のクラス（-translate-y-2など）や影を消し、色の変化だけを残す
           className="group block overflow-hidden rounded-2xl border border-white/20 bg-transparent p-6 backdrop-blur-sm transition-colors duration-300 hover:bg-white/10 hover:border-white/40"
         >
-          <div className="mb-5 h-32 w-full rounded-xl bg-black/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-black/20">
-            <span className="text-4xl">🏟️</span>
+          {/* ▼ 変更点：背景を画像にし、位置調整とホバー時のズームエフェクトを追加 ▼ */}
+          <div
+            className="relative mb-5 h-32 w-full overflow-hidden rounded-xl bg-black/10 bg-cover bg-center transition-all duration-500 group-hover:shadow-lg"
+            // ★ ここに public フォルダに入れた好きな画像のファイル名（パス）を指定してください
+            style={{ backgroundImage: "url('/stadium.png')" }}
+          >
+            {/* 画像を少し暗くして馴染ませるオーバーレイ（ホバーで少し明るくなる） */}
+            <div className="absolute inset-0 bg-black/40 transition-colors duration-300 group-hover:bg-black/20" />
+
+            {/* 画像の上にアイコンを重ねる（不要な場合は <span>...</span> ごと削除してください） */}
+            <div className="relative flex h-full items-center justify-center transition-transform duration-500 group-hover:scale-110">
+              <span className="text-4xl drop-shadow-md"></span>
+            </div>
           </div>
+          {/* ▲ ここまで ▲ */}
+
           <h2 className="mb-3 text-xl font-bold leading-tight text-white/90 transition-colors group-hover:text-white">
             ライブ会場登録
           </h2>
@@ -37,9 +49,20 @@ export default function Home() {
           href="/register?type=artist"
           className="group block overflow-hidden rounded-2xl border border-white/20 bg-transparent p-6 backdrop-blur-sm transition-colors duration-300 hover:bg-white/10 hover:border-white/40"
         >
-          <div className="mb-5 h-32 w-full rounded-xl bg-black/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-black/20">
-            <span className="text-4xl">🎸</span>
+          {/* ▼ 変更点：アーティスト用の背景画像 ▼ */}
+          <div
+            className="relative mb-5 h-32 w-full overflow-hidden rounded-xl bg-black/10 bg-cover bg-center transition-all duration-500 group-hover:shadow-lg"
+            // ★ ここに public フォルダに入れたアーティスト用の画像パスを指定してください
+            style={{ backgroundImage: "url('/artist.png')" }}
+          >
+            <div className="absolute inset-0 bg-black/40 transition-colors duration-300 group-hover:bg-black/20" />
+
+            <div className="relative flex h-full items-center justify-center transition-transform duration-500 group-hover:scale-110">
+              <span className="text-4xl drop-shadow-md"></span>
+            </div>
           </div>
+          {/* ▲ ここまで ▲ */}
+
           <h2 className="mb-3 text-xl font-bold leading-tight text-white/90 transition-colors group-hover:text-white">
             アーティスト登録
           </h2>
@@ -48,13 +71,15 @@ export default function Home() {
           </p>
         </Link>
 
-        {/* ボックス3：お気に入り */}
+        {/* ボックス3：お気に入り（画像指定なし・アイコンのまま） */}
         <Link
           href="/results?filter=favorites"
           className="group block overflow-hidden rounded-2xl border border-white/20 bg-transparent p-6 backdrop-blur-sm transition-colors duration-300 hover:bg-white/10 hover:border-white/40"
         >
           <div className="mb-5 h-32 w-full rounded-xl bg-black/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-black/20">
-            <span className="text-4xl">⭐</span>
+            <span className="text-4xl transition-transform duration-500 group-hover:scale-110">
+              ⭐
+            </span>
           </div>
           <h2 className="mb-3 text-xl font-bold leading-tight text-white/90 transition-colors group-hover:text-white">
             お気に入り
