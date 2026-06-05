@@ -3,8 +3,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, UserPlus, LogIn } from "lucide-react";
 
 export default function LoginPage() {
@@ -20,27 +18,21 @@ export default function LoginPage() {
   const [loginPassword, setLoginPassword] = useState("");
   const [showLoginPassword, setShowLoginPassword] = useState(false);
 
-  // ① ユーザー登録ボタンを押したときの処理
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!signupEmail || signupPassword.length < 8) {
       alert("メールアドレスを入力し、パスワードは8文字以上にしてください。");
       return;
     }
-
     try {
       const response = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: signupEmail, password: signupPassword }),
       });
-
       const data = await response.json();
       alert("サーバーからの返答: " + data.message);
-
       if (response.ok) {
-        // 登録成功したらログイン欄に自動補完してパスワードをクリア
         setLoginEmail(signupEmail);
         setSignupEmail("");
         setSignupPassword("");
@@ -51,28 +43,23 @@ export default function LoginPage() {
     }
   };
 
-  // ② ログインボタンを押したときの処理
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!loginEmail || !loginPassword) {
       alert("メールアドレスとパスワードを入力してください。");
       return;
     }
-
     try {
       const response = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: loginEmail, password: loginPassword }),
       });
-
       const data = await response.json();
       alert("サーバーからの返答: " + data.message);
-
       if (response.ok) {
-        // ログイン成功時にトップページ等へ遷移
-        router.push("/");
+        localStorage.setItem("isLoggedIn", "true");
+        window.location.href = "/"; // 強制リロードでヘッダーを更新
       }
     } catch (error) {
       console.error("通信エラー:", error);
@@ -81,139 +68,216 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-5xl flex-1 flex flex-col justify-center p-6 md:p-12 text-white">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
-          ユーザー認証
-        </h1>
-        <p className="text-white/80 max-w-md mx-auto">
-          アカウントを作成するか、ログインしてシステムを利用してください。
-        </p>
-      </div>
+    <>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        /* 元の index.html の CSS を完全再現 */
+        .login-wrapper {
+          font-family: "Helvetica Neue", Arial, sans-serif;
+          background-color: #f4f6f9;
+          color: #333;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 40px 20px;
+          /* 親要素(layout.tsx)の背景色を上書きするための絶対配置 */
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          z-index: 100;
+        }
+        .login-box {
+          background: #ffffff;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+          padding: 30px;
+          width: 100%;
+          max-width: 400px;
+          margin-bottom: 20px;
+        }
+        .login-box h2 {
+          font-size: 1.4rem;
+          margin-top: 0;
+          margin-bottom: 20px;
+          color: #2c3e50;
+          border-bottom: 2px solid #eee;
+          padding-bottom: 10px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .form-group {
+          margin-bottom: 15px;
+          text-align: left;
+        }
+        .form-group label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: bold;
+          color: #555;
+          font-size: 0.9rem;
+        }
+        .form-group input {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+          font-size: 1rem;
+          color: #333;
+          background-color: #fff;
+        }
+        .form-group input:focus {
+          outline: none;
+          border-color: #007bff;
+        }
+        .password-wrapper {
+          position: relative;
+        }
+        .toggle-btn {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          cursor: pointer;
+          color: #888;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .action-btn {
+          width: 100%;
+          padding: 12px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          font-size: 1.1rem;
+          font-weight: bold;
+          cursor: pointer;
+          transition: background 0.3s;
+          margin-top: 10px;
+        }
+        .action-btn:hover {
+          background-color: #0056b3;
+        }
+        .action-btn.login-color {
+          background-color: #10b981;
+        }
+        .action-btn.login-color:hover {
+          background-color: #059669;
+        }
+      `,
+        }}
+      />
 
-      {/* 2カラムレイアウト（PCでは横並び、スマホでは縦並び） */}
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        {/* ① アカウント作成ボックス */}
-        <div className="rounded-2xl border border-white/20 bg-white/10 p-8 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.1)] flex flex-col justify-between">
-          <div>
-            <h2 className="text-xl font-bold leading-tight mb-6 flex items-center gap-2 border-b border-white/10 pb-3">
-              <UserPlus size={22} className="text-blue-300" />①
-              新規アカウント作成
-            </h2>
+      <div className="login-wrapper">
+        {/* ホームに戻るボタン（元のUIにはありませんでしたが、画面遷移用に配置） */}
+        <button
+          onClick={() => router.push("/")}
+          style={{
+            marginBottom: "20px",
+            color: "#007bff",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            textDecoration: "underline",
+          }}
+        >
+          ← ホームに戻る
+        </button>
 
-            <form onSubmit={handleSignup} className="space-y-5">
-              <div>
-                <label className="text-sm font-semibold text-white/80 block mb-2">
-                  メールアドレス
-                </label>
-                <Input
-                  type="email"
-                  value={signupEmail}
-                  onChange={(e) => setSignupEmail(e.target.value)}
-                  placeholder="example@email.com"
-                  className="w-full bg-white/5 border-white/20 text-white placeholder:text-white/40 focus-visible:ring-white/30 py-5"
+        {/* アカウント作成エリア */}
+        <div className="login-box">
+          <h2>
+            <UserPlus size={24} color="#007bff" /> ① 新規アカウント作成
+          </h2>
+          <form onSubmit={handleSignup}>
+            <div className="form-group">
+              <label>メールアドレス</label>
+              <input
+                type="email"
+                value={signupEmail}
+                onChange={(e) => setSignupEmail(e.target.value)}
+                placeholder="example@email.com"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>パスワード（8文字以上）</label>
+              <div className="password-wrapper">
+                <input
+                  type={showSignupPassword ? "text" : "password"}
+                  value={signupPassword}
+                  onChange={(e) => setSignupPassword(e.target.value)}
+                  placeholder="パスワードを入力"
                   required
                 />
+                <button
+                  type="button"
+                  className="toggle-btn"
+                  onClick={() => setShowSignupPassword(!showSignupPassword)}
+                >
+                  {showSignupPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
+                </button>
               </div>
-
-              <div>
-                <label className="text-sm font-semibold text-white/80 block mb-2">
-                  パスワード（8文字以上）
-                </label>
-                <div className="relative">
-                  <Input
-                    type={showSignupPassword ? "text" : "password"}
-                    value={signupPassword}
-                    onChange={(e) => setSignupPassword(e.target.value)}
-                    placeholder="パスワードを入力"
-                    className="w-full bg-white/5 border-white/20 text-white placeholder:text-white/40 focus-visible:ring-white/30 py-5 pr-12"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowSignupPassword(!showSignupPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors"
-                  >
-                    {showSignupPassword ? (
-                      <EyeOff size={20} />
-                    ) : (
-                      <Eye size={20} />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full mt-4 py-6 font-bold bg-white/20 hover:bg-white/30 text-white border border-white/30 rounded-xl transition-all shadow-md active:scale-[0.99]"
-              >
-                アカウントを作成する
-              </Button>
-            </form>
-          </div>
+            </div>
+            <button type="submit" className="action-btn">
+              アカウントを作成する
+            </button>
+          </form>
         </div>
 
-        {/* ② ログインボックス */}
-        <div className="rounded-2xl border border-white/20 bg-white/10 p-8 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.1)] flex flex-col justify-between">
-          <div>
-            <h2 className="text-xl font-bold leading-tight mb-6 flex items-center gap-2 border-b border-white/10 pb-3">
-              <LogIn size={22} className="text-emerald-300" />② ログイン
-            </h2>
-
-            <form onSubmit={handleLogin} className="space-y-5">
-              <div>
-                <label className="text-sm font-semibold text-white/80 block mb-2">
-                  メールアドレス
-                </label>
-                <Input
-                  type="email"
-                  value={loginEmail}
-                  onChange={(e) => setLoginEmail(e.target.value)}
-                  placeholder="example@email.com"
-                  className="w-full bg-white/5 border-white/20 text-white placeholder:text-white/40 focus-visible:ring-white/30 py-5"
+        {/* ログインエリア */}
+        <div className="login-box">
+          <h2>
+            <LogIn size={24} color="#10b981" /> ② ログイン
+          </h2>
+          <form onSubmit={handleLogin}>
+            <div className="form-group">
+              <label>メールアドレス</label>
+              <input
+                type="email"
+                value={loginEmail}
+                onChange={(e) => setLoginEmail(e.target.value)}
+                placeholder="example@email.com"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>パスワード</label>
+              <div className="password-wrapper">
+                <input
+                  type={showLoginPassword ? "text" : "password"}
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  placeholder="パスワードを入力"
                   required
                 />
+                <button
+                  type="button"
+                  className="toggle-btn"
+                  onClick={() => setShowLoginPassword(!showLoginPassword)}
+                >
+                  {showLoginPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
-
-              <div>
-                <label className="text-sm font-semibold text-white/80 block mb-2">
-                  パスワード
-                </label>
-                <div className="relative">
-                  <Input
-                    type={showLoginPassword ? "text" : "password"}
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                    placeholder="パスワードを入力"
-                    className="w-full bg-white/5 border-white/20 text-white placeholder:text-white/40 focus-visible:ring-white/30 py-5 pr-12"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowLoginPassword(!showLoginPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors"
-                  >
-                    {showLoginPassword ? (
-                      <EyeOff size={20} />
-                    ) : (
-                      <Eye size={20} />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full mt-4 py-6 font-bold bg-white/20 hover:bg-white/30 text-white border border-white/30 rounded-xl transition-all shadow-md active:scale-[0.99]"
-              >
-                ログインする
-              </Button>
-            </form>
-          </div>
+            </div>
+            <button type="submit" className="action-btn login-color">
+              ログインする
+            </button>
+          </form>
         </div>
       </div>
-    </div>
+    </>
   );
 }
