@@ -38,7 +38,7 @@ export async function POST(request: Request) {
   }
 }
 
-// ★ここを追加！ 2. データベースからアーティスト一覧を読み出す機能（GET）
+// 2. データベースからアーティスト一覧を読み出す機能（GET）
 export async function GET() {
   try {
     // artistsテーブルから名前のあいうえお順（ASC）で全件取得する

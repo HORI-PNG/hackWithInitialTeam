@@ -19,7 +19,6 @@ export default function Home() {
         {/* ボックス1：アーティスト登録 */}
         <Link
           href="/register"
-          // ▼ hover:-translate-y-1 を削除しました ▼
           className="group block overflow-hidden rounded-2xl border border-white/20 bg-transparent p-6 backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white/40 shadow-md hover:shadow-xl"
         >
           <div
@@ -42,7 +41,6 @@ export default function Home() {
         {/* ボックス2：ライブ情報検索 */}
         <Link
           href="/search"
-          // ▼ hover:-translate-y-1 を削除しました ▼
           className="group block overflow-hidden rounded-2xl border border-white/20 bg-transparent p-6 backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white/40 shadow-md hover:shadow-xl"
         >
           <div

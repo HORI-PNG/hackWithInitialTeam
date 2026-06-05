@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { sql } from "@vercel/postgres"; // これを追加
+import { sql } from "@vercel/postgres";
 
 export async function POST(request: Request) {
   try {
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     }
 
     // 2. パスワードの照合
-    // 💡注意: Postgresはカラム名を自動で小文字にする仕様があるため `passwordhash` と指定します
+    // Postgresはカラム名を自動で小文字にする仕様があるため `passwordhash` と指定する
     const isMatch = await bcrypt.compare(password, user.passwordhash);
 
     if (!isMatch) {

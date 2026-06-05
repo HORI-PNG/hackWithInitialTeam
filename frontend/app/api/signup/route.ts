@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { sql } from "@vercel/postgres"; // これを追加
+import { sql } from "@vercel/postgres";
 
 export async function POST(request: Request) {
   try {

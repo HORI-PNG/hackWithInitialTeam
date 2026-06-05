@@ -23,7 +23,7 @@ export default function ResultsPage() {
   const [results, setResults] = useState<SearchResult | null>(null);
 
   useEffect(() => {
-    // 処理を一度関数の中に閉じ込めることで、Linter（チェッカー）の警告を回避します
+    // 処理を一度関数の中に閉じ込めることで、Linter（チェッカー）の警告を回避
     const loadData = () => {
       const data = sessionStorage.getItem("liveResults");
       if (data) {
@@ -34,7 +34,7 @@ export default function ResultsPage() {
       }
     };
 
-    loadData(); // ここで関数を実行
+    loadData();
   }, [router]);
 
   if (!results) {

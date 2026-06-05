@@ -21,7 +21,7 @@ export default function SearchPage() {
     "マリンメッセ福岡",
   );
 
-  // ★ データベースから取得したアーティストを保存する状態
+  // データベースから取得したアーティストを保存する状態
   const [registeredArtists, setRegisteredArtists] = useState<DBArtist[]>([]);
 
   const [artistInput, setArtistInput] = useState("");
@@ -30,7 +30,7 @@ export default function SearchPage() {
 
   // 画面が開いたときに会場リストと、DBからアーティストリストを取得する
   useEffect(() => {
-    // ★ データベースからアーティスト一覧を取得
+    // データベースからアーティスト一覧を取得
     fetch("/api/artists")
       .then((res) => {
         if (!res.ok) throw new Error();
@@ -110,7 +110,7 @@ export default function SearchPage() {
           </div>
         </section>
 
-        {/* ★ 追加：② 登録済みアーティストから選ぶ */}
+        {/* ② 登録済みアーティストから選ぶ */}
         <section className="mb-8">
           <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wider mb-3">
             ② 登録済みアーティスト（クリックで入力欄に追加）
