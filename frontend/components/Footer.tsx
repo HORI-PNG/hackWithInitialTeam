@@ -38,7 +38,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="hover:text-white transition-colors flex items-center gap-1"
           >
-            <GraduationCap size={16} /> こがらぼ
+            <GraduationCap size={16} /> こがらぼ民
           </a>
         </div>
       </div>
