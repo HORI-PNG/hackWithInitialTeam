@@ -68,7 +68,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-indigo-900 via-purple-900 to-black">
+    <main className="mx-auto w-full max-w-6xl flex-1 flex flex-col items-center justify-center p-6 md:p-12">
       {/* ホームに戻るボタン */}
       <button
         onClick={() => router.push("/")}
@@ -79,7 +79,7 @@ export default function LoginPage() {
 
       <div className="w-full max-w-md space-y-6">
         {/* アカウント作成エリア */}
-        <div className="p-8 rounded-2xl border border-white/20 bg-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.1)] backdrop-blur-md">
+        <div className="p-8 rounded-2xl border border-white/10 bg-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.1)] backdrop-blur-md">
           <h2 className="flex items-center gap-2 text-xl font-bold text-white mb-6">
             <UserPlus size={24} className="text-blue-400" /> ①
             新規アカウント作成
@@ -93,7 +93,7 @@ export default function LoginPage() {
                 type="email"
                 value={signupEmail}
                 onChange={(e) => setSignupEmail(e.target.value)}
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder:text-white/30"
+                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/30"
                 placeholder="example@email.com"
                 required
               />
@@ -107,7 +107,7 @@ export default function LoginPage() {
                   type={showSignupPassword ? "text" : "password"}
                   value={signupPassword}
                   onChange={(e) => setSignupPassword(e.target.value)}
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder:text-white/30"
+                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/30"
                   placeholder="パスワードを入力"
                   required
                 />
@@ -134,7 +134,7 @@ export default function LoginPage() {
         </div>
 
         {/* ログインエリア */}
-        <div className="p-8 rounded-2xl border border-white/20 bg-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.1)] backdrop-blur-md">
+        <div className="p-8 rounded-2xl border border-white/10 bg-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.1)] backdrop-blur-md">
           <h2 className="flex items-center gap-2 text-xl font-bold text-white mb-6">
             <LogIn size={24} className="text-emerald-400" /> ② ログイン
           </h2>
@@ -147,7 +147,7 @@ export default function LoginPage() {
                 type="email"
                 value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
-                className="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder:text-white/30"
+                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/30"
                 placeholder="example@email.com"
                 required
               />
@@ -161,7 +161,7 @@ export default function LoginPage() {
                   type={showLoginPassword ? "text" : "password"}
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder:text-white/30"
+                  className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/30"
                   placeholder="パスワードを入力"
                   required
                 />
@@ -183,6 +183,6 @@ export default function LoginPage() {
           </form>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
