@@ -15,7 +15,7 @@ export default function Home() {
       </div>
 
       {/* 3つの透過ボックスリンク */}
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-3 shadow-md">
         {/* ボックス1：アーティスト登録 */}
         <Link
           href="/register"
@@ -67,22 +67,17 @@ export default function Home() {
         </Link>
 
         {/* ボックス3：お気に入り（画像指定なし・アイコンのまま） */}
-        <Link
-          href="/results?filter=favorites"
-          className="group block overflow-hidden rounded-2xl border border-white/20 bg-transparent p-6 backdrop-blur-sm transition-colors duration-300 hover:bg-white/10 hover:border-white/40"
-        >
-          <div className="mb-5 h-32 w-full rounded-xl bg-black/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-black/20">
-            <span className="text-4xl transition-transform duration-500 group-hover:scale-110">
-              ⭐
-            </span>
-          </div>
-          <h2 className="mb-3 text-xl font-bold leading-tight text-white/90 transition-colors group-hover:text-white">
-            お気に入り
-          </h2>
-          <p className="text-sm leading-relaxed text-white/70 transition-colors group-hover:text-white/90">
-            チェックした会場やアーティストのリストを一覧で確認します。
-          </p>
-        </Link>
+        <div className="mb-5 h-32 w-full rounded-xl bg-black/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-black/20">
+          <span className="text-4xl transition-transform duration-500 group-hover:scale-110">
+            ⭐
+          </span>
+        </div>
+        <h2 className="mb-3 text-xl font-bold leading-tight text-white/90 transition-colors group-hover:text-white">
+          お気に入り（準備中）
+        </h2>
+        <p className="text-sm leading-relaxed text-white/70 transition-colors group-hover:text-white/90">
+          チェックした会場やアーティストのリストを一覧で確認します。
+        </p>
       </div>
     </main>
   );

@@ -3,9 +3,9 @@ import { GraduationCap } from "lucide-react";
 export default function Footer() {
   // リンクのURL
   const links = {
-    github: "https://github.com",
+    github: "https://qiita.com/HORI-PNG",
     qiita: "https://qiita.com",
-    lab: "https://example.com/lab",
+    lab: "https://www.mk.ics.kyutech.ac.jp/",
   };
 
   return (
@@ -38,7 +38,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="hover:text-white transition-colors flex items-center gap-1"
           >
-            <GraduationCap size={16} /> 研究室紹介
+            <GraduationCap size={16} /> こがらぼ
           </a>
         </div>
       </div>
