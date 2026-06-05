@@ -21,7 +21,10 @@ app = FastAPI(title="場所でライブチェッカーAPI")
 # フロントエンド（Next.js）が別のポート(3000)から通信できるようにCORSを設定
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://localhost:3000'],
+    allow_origins=[
+    "http://localhost:3000",
+    "https://hack-with-initial-team.vercel.app",
+    ],
     allow_credentials=True,
     allow_methods=['*'],  # どの種類のHTTPリクエストも許可
     allow_headers=['*'],  # どの種類のHTTPヘッダーも許可
