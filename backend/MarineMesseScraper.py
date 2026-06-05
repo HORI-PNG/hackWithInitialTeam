@@ -1,6 +1,6 @@
 # Seleniumは実際のブラウザを遠隔操作する自動化フレームワーク
 # Byクラスは、要素を指定するため
-# WebDriverWaitは、Seleniumを使用する場面において、asyncなどの複雑な処理や、timeなどの物足りない処理よりよい
+# WebDriverWaitは、Seleniumを使用する場面において、asyncなどの複雑な処理やtimeなどの物足りない処理よりよい
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
