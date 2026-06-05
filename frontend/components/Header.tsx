@@ -57,7 +57,7 @@ export default function Header() {
               className="flex items-center gap-1 rounded-full border border-red-400/40 bg-red-500/10 px-4 py-1.5 text-sm font-medium text-red-200 transition-colors hover:bg-red-500/20"
             >
               <LogOut size={14} />
-              ログout
+              ログアウト
             </button>
           ) : (
             <Link
