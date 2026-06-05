@@ -23,7 +23,7 @@ export default function ArtistRegisterPage() {
     setMessage(null);
 
     try {
-      // ▼ ここからが本物のデータベース通信！ ▼
+      // データベース通信
       const response = await fetch("/api/artists", {
         method: "POST",
         headers: {

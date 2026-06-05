@@ -6,7 +6,7 @@ import loadingData from "./opener-loading.json";
 
 export default function LoadingAnimation() {
   return (
-    // アニメーションのサイズ調整（お好みで w-48 h-48 などを変えてください）
+    // アニメーションのサイズ調整
     <div className="w-32 h-32 md:w-48 md:h-48 opacity-90">
       <Lottie
         animationData={loadingData}
