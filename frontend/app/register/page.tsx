@@ -1,119 +1,103 @@
+// frontend/app/register/page.tsx
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { fetchVenues, searchEvents } from "@/lib/api";
-
-// shadcn/ui からボタンとインプットをインポート
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export default function RegisterPage() {
-  const router = useRouter();
-  const [venues, setVenues] = useState<string[]>([]);
-  const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
-  const [artistInput, setArtistInput] = useState("");
+export default function ArtistRegisterPage() {
+  const [artistName, setArtistName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
-  useEffect(() => {
-    fetchVenues()
-      .then(setVenues)
-      .catch(() => setError("会場リストの取得に失敗しました"));
-  }, []);
-
-  const handleSearch = async () => {
-    if (!selectedVenue) {
-      setError("会場を選択してください");
+  const handleRegister = async () => {
+    if (!artistName.trim()) {
+      setMessage({ type: "error", text: "アーティスト名を入力してください" });
       return;
     }
 
-    const keywords = artistInput
-      .split(",")
-      .map((k) => k.trim())
-      .filter((k) => k !== "");
-
     setLoading(true);
-    setError(null);
+    setMessage(null);
 
     try {
-      const result = await searchEvents(selectedVenue, keywords);
-      sessionStorage.setItem("liveResults", JSON.stringify(result));
-      router.push("/results");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "エラーが発生しました");
+      // ▼ ここからが本物のデータベース通信！ ▼
+      const response = await fetch("/api/artists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: artistName }), // 入力された名前を送信
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // サーバーからエラーが返ってきた場合（重複など）
+        throw new Error(data.error || "登録に失敗しました。");
+      }
+
+      // 成功した場合
+      setMessage({
+        type: "success",
+        text: `${artistName} をデータベースに登録しました！`,
+      });
+      setArtistName(""); // フォームをクリア
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setMessage({ type: "error", text: err.message });
+      } else {
+        setMessage({ type: "error", text: "不明なエラーが発生しました。" });
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    // 背景のグラデーションを削除し、レイアウト用の余白だけを残す
     <div className="py-12 px-6 w-full flex-1 flex flex-col items-center">
-      {/* 白背景を削除し、グラスモーフィズム（bg-white/10, backdrop-blur, border-white/20）を適用 */}
-      <main className="w-full max-w-2xl p-8 rounded-2xl border border-white/20 bg-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.1)] backdrop-blur-md">
+      <main className="w-full max-w-xl p-8 rounded-2xl border border-white/20 bg-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.1)] backdrop-blur-md">
         <h1 className="text-3xl font-extrabold mb-8 tracking-tight text-white border-b border-white/20 pb-4">
-          ライブ情報検索
+          アーティスト登録
         </h1>
 
-        {/* 会場選択セクション */}
         <section className="mb-8">
           <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wider mb-3">
-            ① 会場を選択
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {venues.map((venue) => {
-              const isSelected = selectedVenue === venue;
-              return (
-                <Button
-                  key={venue}
-                  type="button"
-                  variant={isSelected ? "default" : "outline"}
-                  className={`rounded-full px-5 py-2 transition-all ${
-                    isSelected
-                      ? // 選択時のスタイル（少し濃い白＋少し浮く）
-                        "bg-white/30 border-transparent text-white shadow-md scale-105 hover:bg-white/40"
-                      : // 未選択時のスタイル（薄い枠線＋透過）
-                        "bg-white/5 border-white/20 text-white hover:bg-white/15 hover:border-white/30"
-                  }`}
-                  onClick={() => setSelectedVenue(venue)}
-                >
-                  {venue}
-                </Button>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* アーティスト入力セクション */}
-        <section className="mb-8">
-          <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wider mb-3">
-            ② アーティスト名 (カンマ区切り)
+            アーティスト名を追加
           </h2>
           <Input
             type="text"
-            value={artistInput}
-            onChange={(e) => setArtistInput(e.target.value)}
-            placeholder="例: 緑黄色社会, Vaundy"
-            // 入力欄も透過させる
+            value={artistName}
+            onChange={(e) => setArtistName(e.target.value)}
+            placeholder="例: ヨルシカ, Ado"
             className="w-full text-base py-5 px-4 focus-visible:ring-2 bg-white/5 border-white/20 text-white placeholder:text-white/40 focus-visible:ring-white/30"
           />
+          <p className="mt-3 text-xs text-white/60 leading-relaxed">
+            ここで登録したアーティストは、検索時の候補やシステム全体のデータベースに追加されます。
+          </p>
         </section>
 
-        {error && (
-          <p className="text-sm text-red-200 mb-6 p-4 bg-red-900/40 border border-red-500/30 rounded-lg font-medium backdrop-blur-sm">
-            {error}
+        {message && (
+          <p
+            className={`text-sm mb-6 p-4 border rounded-lg font-medium backdrop-blur-sm ${
+              message.type === "error"
+                ? "text-red-200 bg-red-900/40 border-red-500/30"
+                : "text-emerald-200 bg-emerald-900/40 border-emerald-500/30"
+            }`}
+          >
+            {message.text}
           </p>
         )}
 
-        {/* 検索ボタンの透過・統一感調整 */}
         <Button
-          onClick={handleSearch}
+          onClick={handleRegister}
           disabled={loading}
           size="lg"
           className="w-full py-6 text-base font-bold shadow-lg transition-all active:scale-[0.99] bg-white/20 text-white border border-white/30 hover:bg-white/30"
         >
-          {loading ? "検索中..." : "検索する！"}
+          {loading ? "登録中..." : "登録する"}
         </Button>
       </main>
     </div>
