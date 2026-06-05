@@ -14,7 +14,7 @@ from JsonGetterByAPI import JsonGetterByAPI
 from DataFilter import DataFilter
 
 load_dotenv()
-api_key = os.getenv("ApiKey")
+api_key = os.getenv("GEMINI_API_KEY")
 
 app = FastAPI(title="場所でライブチェッカーAPI")
 
