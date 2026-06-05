@@ -1,7 +1,7 @@
 // frontend/lib/api.ts
 
 // Python（FastAPI）サーバーのアドレス
-const BACKEND_URL = "http://127.0.0.1:8000";
+const BACKEND_URL = "https://hackwithinitialteam.onrender.com";
 
 // 1. 会場リストを取得するAPI（GET）
 export async function fetchVenues(): Promise<string[]> {
