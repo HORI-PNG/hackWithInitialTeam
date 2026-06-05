@@ -14,12 +14,7 @@ export async function fetchVenues(): Promise<string[]> {
   } catch (error) {
     console.error("fetchVenues エラー:", error);
     // サーバーが落ちている時のための保険（フォールバック）
-    return [
-      "マリンメッセ福岡 A館",
-      "マリンメッセ福岡 B館",
-      "Zepp Fukuoka",
-      "PayPayドーム",
-    ];
+    return ["Error Venue"];
   }
 }
 
