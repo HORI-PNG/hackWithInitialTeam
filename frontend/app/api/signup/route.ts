@@ -1,14 +1,14 @@
-// frontend/app/api/signup/route.ts
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { users } from "@/lib/db";
+import { sql } from "@vercel/postgres"; // これを追加
 
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
 
-    const userExists = users.some((user) => user.email === email);
-    if (userExists) {
+    // 1. DBにすでに同じメールアドレスがないかチェック
+    const { rows } = await sql`SELECT * FROM users WHERE email = ${email}`;
+    if (rows.length > 0) {
       return NextResponse.json(
         { message: "このメールアドレスは既に登録されています。" },
         { status: 400 },
@@ -18,18 +18,18 @@ export async function POST(request: Request) {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    users.push({ email, passwordHash: hashedPassword });
-
-    console.log("--- 新しいユーザーが登録されました ---");
-    console.log("メールアドレス:", email);
-    console.log("暗号化されたパスワード（ハッシュ）:", hashedPassword);
-    console.log("------------------------------------");
+    // 2. DBに新しいユーザーを保存
+    await sql`
+      INSERT INTO users (email, passwordHash)
+      VALUES (${email}, ${hashedPassword})
+    `;
 
     return NextResponse.json(
       { message: "ユーザー登録が成功しました！" },
       { status: 201 },
     );
   } catch (error) {
+    console.error("Signup Error:", error);
     return NextResponse.json(
       { message: "サーバー内でエラーが発生しました。" },
       { status: 500 },
