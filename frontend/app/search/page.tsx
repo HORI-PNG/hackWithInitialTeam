@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { fetchVenues, searchEvents } from "@/lib/api";
+import { searchEvents } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -16,8 +16,10 @@ interface DBArtist {
 
 export default function SearchPage() {
   const router = useRouter();
-  const [venues, setVenues] = useState<string[]>([]);
-  const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
+  const [venues, setVenues] = useState<string[]>(["マリンメッセ福岡"]); // 初期状態で選択済みにする
+  const [selectedVenue, setSelectedVenue] = useState<string | null>(
+    "マリンメッセ福岡",
+  );
 
   // ★ データベースから取得したアーティストを保存する状態
   const [registeredArtists, setRegisteredArtists] = useState<DBArtist[]>([]);
@@ -28,11 +30,6 @@ export default function SearchPage() {
 
   // 画面が開いたときに会場リストと、DBからアーティストリストを取得する
   useEffect(() => {
-    // 会場リストの取得
-    fetchVenues()
-      .then(setVenues)
-      .catch(() => setError("会場リストの取得に失敗しました"));
-
     // ★ データベースからアーティスト一覧を取得
     fetch("/api/artists")
       .then((res) => {
